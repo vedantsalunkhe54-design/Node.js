@@ -18,6 +18,14 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "lucide-react": "^1.31.0",
+    "mongoose": "^9.9.3",
+    "react-router-dom": "^7.18.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3"
   }
 }

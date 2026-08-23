@@ -1,0 +1,49 @@
+
+{
+  "activeAlert": "ACTIVE CYCLONE ALERT: Red alert issued for coastal Odisha. Stay indoors.",
+  "contacts": [
+    { "name": "NDRF (Disaster Response)", "number": "9711077372" },
+    { "name": "National Emergency", "number": "112" },
+    { "name": "Ambulance", "number": "108" },
+    { "name": "Fire", "number": "101" }
+  ],
+  "disasters": [
+    {
+      "id": "cyclone",
+      "name": "Cyclone",
+      "icon": "Wind",
+      "activeWarning": true,
+      "phases": {
+        "before": [
+          "Secure loose items outside your home.",
+          "Prepare an emergency kit with 3 days of food and water.",
+          "Keep mobile phones fully charged and pack power banks.",
+          "Identify the safest room in your house (usually windowless)."
+        ],
+        "during": [
+          "STAY INDOORS. Disconnect electrical appliances.",
+          "STAY AWAY from glass windows and doors.",
+          "DO NOT venture out during the eye of the storm.",
+          "Listen to battery-operated radios for official updates."
+        ],
+        "after": [
+          "Wait for official 'All Clear' before leaving shelter.",
+          "Do not touch loose or dangling wires.",
+          "Drink only boiled or bottled water.",
+          "Check house structure carefully before re-entering."
+        ]
+      }
+    },
+    {
+      "id": "earthquake",
+      "name": "Earthquake",
+      "icon": "Activity",
+      "activeWarning": false,
+      "phases": {
+        "before": ["Fasten heavy furniture to walls.", "Know your safe spots.", "Prepare a go-bag."],
+        "during": ["DROP to your hands and knees.", "COVER your head and neck.", "HOLD ON to your shelter."],
+        "after": ["Evacuate the building if unsafe.", "Expect aftershocks.", "Do not use elevators."]
+      }
+    }
+  ]
+}
