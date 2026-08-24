@@ -1,11 +1,30 @@
-const express = require ('express');
+const express = require('express');
+
+const { connectToDatabase } = require('./connect');
 const urlRoute = require('./routes/url');
-const {connectToDatabase} = require('./connect');
 
 const app = express();
+
 const PORT = 8001;
 
-connectToDatabase('mongodb://localhost:27017/short-url').then(() => console.log('Connected to database')).catch((err) => console.error('Database connection error:', err));
+const MONGODB_URI = 'mongodb+srv://Vedant:Practical12345@cluster0.oqy7d7j.mongodb.net/?appName=Cluster0';
 
-app.use( "/url", urlRoute);
-app.listen(PORT, () => console.log('Server started at port ' + PORT));
+app.use(express.json());
+
+app.use('/url', urlRoute);
+
+connectToDatabase(MONGODB_URI)
+    .then(() => {
+        console.log('Connected to MongoDB Atlas');
+
+        app.listen(PORT, () => {
+            console.log(`Server started at port ${PORT}`);
+        });
+
+        app.get('/', (req, res) => {
+    res.send('URL Shortener Server is running!');
+});
+    })
+    .catch((err) => {
+        console.error('Database connection error:', err);
+    });

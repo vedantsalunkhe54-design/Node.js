@@ -5,5 +5,5 @@ async function connectToDatabase(url) {
 }
 
 module.exports = {
-    connectToDatabase,
-};  
+    connectToDatabase
+};
