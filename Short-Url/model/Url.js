@@ -8,7 +8,7 @@ const schema = new mongoose.Schema({
 
     redirectUrl: {
         type: String,
-        unique: true
+        unique: false
     },
 
     visitHistory: [
