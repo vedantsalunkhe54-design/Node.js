@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 
+// program for connecting to MongoDB Atlas
+// const mongoose = require('mongoose');        
+
 const { connectToDatabase } = require('./connect');
 const urlRoute = require('./routes/url');
 const Url = require('./model/Url');
