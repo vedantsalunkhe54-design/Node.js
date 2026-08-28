@@ -7,3 +7,5 @@ async function connectToDatabase(url) {
 module.exports = {
     connectToDatabase
 };
+
+// Connect to the database
