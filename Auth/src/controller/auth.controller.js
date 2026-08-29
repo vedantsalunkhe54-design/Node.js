@@ -27,22 +27,76 @@ export async function register(req, res) {
         password: hashedPassword
     });
 
-    res.status(201).json({
-        message: "User registered successfully",
-    });
-
-    const token = jwt.sign({
+    const accessToken = jwt.sign({
         id: user._id,
     }, config.jwtSecret, {
-        expiresIn: "1d"
+        expiresIn: "15m"
     });
+
+    const refereshToken = jwt.sign({
+        id: user._id,
+    }, config.jwtSecret, {
+        expiresIn: "7d"
+    });
+
+    res.cookie("refereshToken", refereshToken,{
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+    })
 
     res.status(201).json({
         message: "User registered successfully",
         user:{
             username: user.username,
-            email: user.email,
+            email: user.email
         },
-        token
+        accessToken
+    })
+}
+
+
+export async function getMe(req, res){
+    const token = req.headers.authorization?.split(" ")[ 1 ];
+
+    if(!token){
+        res.status(400).json({
+            message: "Token Not Found"
+        })
+    }
+
+    const decoded = jwt.verify(token, config.jwtSecret)
+    
+    const user = await userModel.findById(decoded.id)
+
+    res.status(200).json({
+        message: "User fetched successfully",
+        user: {
+            username: user.username,
+            email: user.email
+        }
+    })
+}
+
+
+export async function refereshToken(req, res){
+    const refereshToken = req.cookies.refereshToken;
+
+    if(!refereshToken){
+        res.status(401).json({
+            message: "Referesh Token never EXISTED"
+        });
+    }
+
+    const decoded = jwt.verify(refereshToken, config.jwtSecret);
+
+    const accessToken =jwt.sign({
+        id: decoded.id
+    }, config.jwtSecret,{
+        expiresIn: "15m"
+    })
+
+    res.status(200).json({
+        message: "Access Token refereshed successfully"
     })
 }
