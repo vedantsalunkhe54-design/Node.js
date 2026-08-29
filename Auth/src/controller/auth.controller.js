@@ -15,11 +15,14 @@ export async function register(req, res) {
 
     if (isAlreadyRegistered) {
         return res.status(409).json({
-             message: "Username or email already exists"
-             });
+            message: "Username or email already exists"
+        });
     }
 
-    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const hashedPassword = crypto
+        .createHash("sha256")
+        .update(password)
+        .digest("hex");
 
     const user = await userModel.create({
         username,
@@ -27,76 +30,101 @@ export async function register(req, res) {
         password: hashedPassword
     });
 
-    const accessToken = jwt.sign({
-        id: user._id,
-    }, config.jwtSecret, {
-        expiresIn: "15m"
-    });
+    const accessToken = jwt.sign(
+        {
+            id: user._id
+        },
+        config.jwtSecret,
+        {
+            expiresIn: "15m"
+        }
+    );
 
-    const refereshToken = jwt.sign({
-        id: user._id,
-    }, config.jwtSecret, {
-        expiresIn: "7d"
-    });
+    const refreshToken = jwt.sign(
+        {
+            id: user._id
+        },
+        config.jwtSecret,
+        {
+            expiresIn: "7d"
+        }
+    );
 
-    res.cookie("refereshToken", refereshToken,{
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: true,
-    })
+        sameSite: true
+    });
 
-    res.status(201).json({
+    return res.status(201).json({
         message: "User registered successfully",
-        user:{
+        user: {
             username: user.username,
             email: user.email
         },
         accessToken
-    })
+    });
 }
 
 
-export async function getMe(req, res){
-    const token = req.headers.authorization?.split(" ")[ 1 ];
+export async function getMe(req, res) {
+    const token = req.headers.authorization?.split(" ")[1];
 
-    if(!token){
-        res.status(400).json({
+    if (!token) {
+        return res.status(400).json({
             message: "Token Not Found"
-        })
+        });
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret)
-    
-    const user = await userModel.findById(decoded.id)
+    const decoded = jwt.verify(
+        token,
+        config.jwtSecret
+    );
 
-    res.status(200).json({
+    const user = await userModel.findById(decoded.id);
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+
+    return res.status(200).json({
         message: "User fetched successfully",
         user: {
             username: user.username,
             email: user.email
         }
-    })
+    });
 }
 
 
-export async function refereshToken(req, res){
-    const refereshToken = req.cookies.refereshToken;
+export async function refreshToken(req, res) {
+    const refreshToken = req.cookies.refreshToken;
 
-    if(!refereshToken){
-        res.status(401).json({
-            message: "Referesh Token never EXISTED"
+    if (!refreshToken) {
+        return res.status(401).json({
+            message: "Refresh Token doesn't exist"
         });
     }
 
-    const decoded = jwt.verify(refereshToken, config.jwtSecret);
+    const decoded = jwt.verify(
+        refreshToken,
+        config.jwtSecret
+    );
 
-    const accessToken =jwt.sign({
-        id: decoded.id
-    }, config.jwtSecret,{
-        expiresIn: "15m"
-    })
+    const accessToken = jwt.sign(
+        {
+            id: decoded.id
+        },
+        config.jwtSecret,
+        {
+            expiresIn: "15m"
+        }
+    );
 
-    res.status(200).json({
-        message: "Access Token refereshed successfully"
-    })
+    return res.status(200).json({
+        message: "Access Token refreshed successfully",
+        accessToken
+    });
 }

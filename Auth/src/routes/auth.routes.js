@@ -15,10 +15,10 @@ authRouter.post("/register", authController.register);
 authRouter.get("/get-me", authController.getMe);
 
 /*
-        Get /api/auth/referesh-token
+        Get /api/auth/refresh-token
 */
 
-authRouter.get("/referesh-token", authController.refereshToken);
+authRouter.get("/refresh-token", authController.refreshToken);
 
 
 
