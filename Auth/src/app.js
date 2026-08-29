@@ -9,5 +9,9 @@ app.use(morgan("dev"));
 app.use("/api/auth", authRouter);
 
 
+app.get("/", (req, res) => {
+    res.send("Server is working");
+});
+
 
 export default app;
