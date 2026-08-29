@@ -1,0 +1,3 @@
+FaADxGys82MFMTE1
+
+mongodb+srv://vedantsalunkhe54_db_user:FaADxGys82MFMTE1@my-auth.kv5jtwv.mongodb.net/

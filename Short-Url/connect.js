@@ -8,4 +8,4 @@ module.exports = {
     connectToDatabase
 };
 
-// Connect to the database
+// Connect to the databaser
