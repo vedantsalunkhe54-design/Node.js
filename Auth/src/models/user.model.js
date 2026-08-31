@@ -1,22 +1,32 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: [true, "Username is required"],
-        unique: [true, "Username must be unique"],
-    },
-    email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: [true, "Email must be unique"],
-    },
-    password: {
-        type: String,
-        required: [true, "Password is required"],
-    },
-});
+const userSchema = new mongoose.Schema(
+    {
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true
+        },
 
-const User = mongoose.model("User", userSchema);
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+            lowercase: true
+        },
 
-export default User;
+        password: {
+            type: String,
+            required: true
+        }
+    },
+    {
+        timestamps: true
+    }
+);
+
+const userModel = mongoose.model("User", userSchema);
+
+export default userModel;
