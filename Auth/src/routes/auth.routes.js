@@ -20,8 +20,8 @@ authRouter.get("/get-me", authController.getMe);
 
 authRouter.get("/refresh-token", authController.refreshToken);
 
-authRouter.post("/logout", authController.logout);
+authRouter.get("/logout", authController.logout);
 
-
+authRouter.get("/logout-all", authController.logoutAll);
 
 export default authRouter;
