@@ -171,6 +171,25 @@ export async function refreshToken(req, res) {
             });
         }
 
+
+        const refreshTokenHash = crypto
+            .createHash("sha256")
+            .update(refreshToken)
+            .digest("hex");
+
+        // Find session by refresh token hash
+        const session = await sessionModel.findOne({
+            refreshTokenHash
+        });
+
+        if (!session) {
+            return res.status(401).json({
+                message: "Invalid refresh token"
+            });
+        }
+
+        // Check if session is expired
+
         // Verify refresh token
         const decoded = jwt.verify(
             refreshToken,
@@ -188,6 +207,28 @@ export async function refreshToken(req, res) {
             }
         );
 
+        const newRefreshToken = jwt.sign(
+            {
+                id: decoded.id
+            },
+            config.jwtSecret,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        // Hash new refresh token
+        const newRefreshTokenHash = crypto
+            .createHash("sha256")
+            .update(newRefreshToken)
+            .digest("hex");
+
+        // Update session with new refresh token hash
+        session.refreshTokenHash = newRefreshTokenHash;
+        await session.save();
+
+       
+
         return res.status(200).json({
             message: "Access token refreshed successfully",
             accessToken
@@ -195,6 +236,40 @@ export async function refreshToken(req, res) {
 
     } catch (error) {
         console.error("REFRESH TOKEN ERROR:", error);
+
+        return res.status(401).json({
+            message: "Invalid or expired refresh token"
+        });
+    }
+}
+
+export async function logout(req, res) {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return res.status(401).json({
+                message: "Refresh token doesn't exist"
+            });
+        }
+
+        // Verify refresh token
+        const decoded = jwt.verify(
+            refreshToken,
+            config.jwtSecret
+        );
+
+        // Delete session from database
+        await sessionModel.findByIdAndDelete(decoded.sessionID);
+
+        // Clear refresh token cookie
+        res.clearCookie("refreshToken");
+
+        return res.status(200).json({
+            message: "Logged out successfully"
+        });             
+    } catch (error) {
+        console.error("LOGOUT ERROR:", error);
 
         return res.status(401).json({
             message: "Invalid or expired refresh token"
