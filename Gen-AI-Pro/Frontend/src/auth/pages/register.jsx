@@ -1,15 +1,9 @@
-import react from 'react'
-
-const register = () => {
+const Register = () => {
   return (
-    <div className='register'>
-      <h1>Register</h1>
-      <form>
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <button type="submit">Login</button>
-      </form>
+    <div className="register">
+      Register
     </div>
-  )
-}
+  );
+};
+
+export default Register;
