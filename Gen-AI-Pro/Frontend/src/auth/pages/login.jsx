@@ -1,5 +1,6 @@
 import react from 'react'
 import '../auth.form.scss'
+import { useNavigate , Link} from 'react-router-dom'
 
 const login = () => {
 
@@ -35,6 +36,9 @@ const login = () => {
         
         
          </form>
+
+          <p>Don't have an account? <Link to="/register">Register</Link></p>
+
       </div>
     </main>
   )
