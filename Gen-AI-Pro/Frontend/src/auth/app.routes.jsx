@@ -8,13 +8,12 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/",
-    element: <Login />,
-  },
-  {
     path: "/register",
     element: <Register />,
-  },
+  },{
+    path: "/",
+    element: <h1> HOME PAGE</h1>
+  }
 ]);
 
 export default router;
