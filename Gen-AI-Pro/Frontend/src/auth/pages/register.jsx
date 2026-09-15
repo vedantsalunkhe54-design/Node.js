@@ -29,7 +29,7 @@ const Register = () => {
       <div className="form-container">
       <h1>Register</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form o     nSubmit={handleSubmit}>
         
         <div className="input-group">
 
