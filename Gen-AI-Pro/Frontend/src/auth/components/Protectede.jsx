@@ -2,7 +2,7 @@ import { useAuth } from "../hooks/use.auth";
 import { Navigate } from "react-router-dom";
 import React, { Children } from "react";
 
-const Protected = () => {
+export const Protected = () => {
     const {loading, user} = useAuth()
 
 
