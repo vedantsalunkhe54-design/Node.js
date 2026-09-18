@@ -3,6 +3,8 @@ import Register from "./pages/register";
 import Login from "./pages/login";
 import { Protected } from "./components/Protectede";
 
+// Here we give all routes of the website
+
 const router = createBrowserRouter([
   {
     path: "/login",
