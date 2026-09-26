@@ -8,45 +8,62 @@ const ai = new GoogleGenAI({
 
 const interviewReportSchema = z.object({
 
-    matchScore: z.number().description("A score between 0 and 100 indicating how well the candidate profile matches the job description"),
+    matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate profile matches the job "),
 
 
 
     technicalQuestions: z.array(z.object({
 
-        question: z.string().description("The technical question can be asked in the interview"),
-        intention:  z.string().description("The intention of interviewer behind asking this question"),
-        answer: z.string().description("How to answer this question, what points to cover, what approach to take etc")
-        })).description("Technical Questions that can be asked in the interview along with their intention and how to answer them"),
+        question: z.string().describe("The technical question can be asked in the interview"),
+        intention:  z.string().describe("The intention of interviewer behind asking this question"),
+        answer: z.string().describe("How to answer this question, what points to cover, what approach to take etc")
+        })).describe("Technical Questions that can be asked in the interview along with their intention and how to answer them"),
 
     behavioralQuestions: z.array(z.object({
 
-        question: z.string().description("The technical question can be asked in the interview"),
-        intention:  z.string().description("The intention of interviewer behind asking this question"),
-        answer: z.string().description("How to answer this question, what points to cover, what approach to take etc")
-    })).description("Behavioral Questions that can be asked in the interview along with their intention and how to answer them"),
+        question: z.string().describe("The technical question can be asked in the interview"),
+        intention:  z.string().describe("The intention of interviewer behind asking this question"),
+        answer: z.string().describe("How to answer this question, what points to cover, what approach to take etc")
+    })).describe("Behavioral Questions that can be asked in the interview along with their intention and how to answer them"),
 
 
     skillGaps: z.array(z.object({
 
-        skill: z.string().description("The skills which the candidate is lacking"),
-        severity: z.string().description("The severity of the skill gap "),
-    })).description("List of skill gaps the candidate profile along with their"),
+        skill: z.string().describe("The skills which the candidate is lacking"),
+        severity: z.string().describe("The severity of the skill gap "),
+    })).describe("List of skill gaps the candidate profile along with their"),
 
     preparationPlan: z.array(z.object({
 
-        day: z.string().description("The day number in the preparation plan, starting from 1"),
-        focus: z.string().description("The main focus of this day in the preparation, e.g. data structures, system design, mock interview"),
-        tasks: z.string().description("List of taks to be done on this day to follow the preparation plan, e.g. read a specific book")
+        day: z.string().describe("The day number in the preparation plan, starting from 1"),
+        focus: z.string().describe("The main focus of this day in the preparation, e.g. data structures, system design, mock interview"),
+        tasks: z.string().describe("List of taks to be done on this day to follow the preparation plan, e.g. read a specific book")
 
-    })).description("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively")
+    })).describe("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively")
 
 
     })
 
 
-async function generateInterviewReport(resume,selfDescription,jobDescription){
+async function generateInteviewReport(resume,selfDescription,jobDescription){
 
+    const prompt = `Generate an interview report with the following details:
+    Resume: ${resume}
+    Self Description: ${selfDescription}
+    Job Description: ${jobDescription}
+    `;
+
+    const response = await ai.models.generateContent({
+        model: "gemini-3.1-flash-lite",
+        contents: prompt,
+        config:{
+            responseMimeType: "application/json",
+            responseSchema:zodToJsonSchema(interviewReportSchema)
+        }
+
+    })
+
+    return JSON.parse(response.text)
 
 
 }
@@ -64,4 +81,4 @@ async function invokeGeminiAI() {
 
 }
 
-module.exports = invokeGeminiAI;
+module.exports = generateInteviewReport;
