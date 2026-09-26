@@ -2,6 +2,8 @@ const express = require ('express');
 const authRouter = require('../Routes/auth.routes');
 const cookieParser = require('cookie-parser');
 const cors = require ("cors");
+const interviewRouter = require('../Routes/interview.routes');
+const interviewController = require("../controllers/interview.controller")
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(cors({
 
 app.use('/api/auth', authRouter);
 
+app.use("/api/interview",interviewRouter)
 
 
 module.exports = app;
