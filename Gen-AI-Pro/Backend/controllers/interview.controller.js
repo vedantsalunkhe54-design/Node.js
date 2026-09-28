@@ -31,5 +31,5 @@ async function generateInterviewReportController(req, res){
 }
 
 
-
+// Exporting data
 module.exports = {generateInterviewReportController}
