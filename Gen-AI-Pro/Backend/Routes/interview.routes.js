@@ -7,7 +7,6 @@ const upload = require("../middleware/file.middleware")
 const interviewRouter = express.Router();
 
 
-interviewRouter.post("/", authMiddleware.authUser, upload.single("resume"), interviewController.generateInterviewReportController)
-
+interviewRouter.get("/", authMiddleware.authenticateToken, interviewController.generateInterviewReportController)
 
 module.exports = interviewRouter ;
