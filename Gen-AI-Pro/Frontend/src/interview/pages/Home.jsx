@@ -3,7 +3,14 @@ import React from "react";
 const Home = () => {
     return (
 
-        <main className="home"></main>
+        <main className="home">
+            <div className="left">
+                <textarea></textarea>
+
+
+            </div>
+
+        </main>
 
     )
 }
