@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/home.scss "
+import '../style/Home.scss';
 
 const Home = () => {
     return (
@@ -17,7 +17,7 @@ const Home = () => {
                         <label htmlFor="SelfDescription">Self Description</label>
                         <textarea name="selfDescription" id="selfDescription" placeholder="Describe yourself in few sentences..."></textarea>
                     </div>
-                    <button className="generate-btn">Genetrate Interview Report </button>
+                    <button className="generate-btn">Generate Interview Report </button>
                 </div>
 
 
