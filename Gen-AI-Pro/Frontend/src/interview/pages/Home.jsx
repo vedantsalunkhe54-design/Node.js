@@ -5,12 +5,13 @@ const Home = () => {
     return (
 
         <main className="home">
+            <div className="interview-input-group" >
             <div className="left">
                 <textarea name= "jobDescription" id= "jobDescription" placeholder="Enter job Description"></textarea>
                 <div className="right"> 
                     <div className="input-group">
-                        <label htmlFor="resume">Upload Resume</label>
-                        <input type="file" name="resume" accept=".pdf, .doc, .docx" />
+                        <label className="file-label" htmlFor="resume">Upload Resume</label>
+                        <input hidden type="file" name="resume" accept=".pdf, .doc, .docx" />
                 
                     </div>
                     <div className="input-group">
@@ -22,7 +23,7 @@ const Home = () => {
 
 
             </div>
-
+        </div>
         </main>
 
     )

@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth.context.jsx";
+import { useEffect } from "react";
+
 import {
   loginUser,
   registerUser,
   logoutUser,
+  getMe,
 } from "../services/auth.api.js";
 
 export const useAuth = () => {
@@ -64,6 +67,24 @@ export const useAuth = () => {
       setLoading(false);
     }
   };
+
+  useEffect(async () => {
+
+    const getAndSetUser = async () => {
+    try {
+
+      const data = await getMe();
+      setUser(data.user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+      getAndSetUser();
+  }, []);
+
+
 
   return {
     user,
