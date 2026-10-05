@@ -1,70 +1,91 @@
-import React,{useState} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
-import { useAuth } from '../hooks/use.auth';
-
-const {loading, handleRegister}= useAuth()
-
-
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  await handleRegister(username, email, password)
-  navigate("/")
-}
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../hooks/use.auth";
 
 const Register = () => {
-
-  const [username, setUsername] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState(''); 
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { loading, handleRegister } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle register logic here
+
+    try {
+      await handleRegister({
+        name: username,
+        email,
+        password,
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   return (
-     <main>
+    <main>
       <div className="form-container">
-      <h1>Register</h1>
+        <h1>Register</h1>
 
-      <form o     nSubmit={handleSubmit}>
-        
-        <div className="input-group">
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="username">Username</label>
 
-          <label htmlFor="username">Username</label>
-          <input
-            onChange={(e)=> {setUsername(e.target.value)}}
-          type="text" name="username" id="username" placeholder='Enter your username' />
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-        </div>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
 
-        <div className="input-group">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-          <label htmlFor="email">Email</label>
-          <input
-          onChange={(e)=> {setEmail(e.target.value)}}
-          type="email" name="email" id="email" placeholder='Enter your email' />
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
 
-        </div>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="input-group">
+          <button
+            className="button primary-button"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
 
-          <label htmlFor="password">Password</label>
-          <input
-          onChange={(e)=> {setPassword(e.target.value)}}
-          type="password" name="password" id="password" placeholder='Enter your password' />
-
-        </div>
-
-        <button className='button primary-button' type='submit'>Register</button>
-        
-        
-        
-         </form>
-
-         <p>Already have an account? <Link to ="/Login">Login</Link></p>
+        <p>
+          Already have an account? <Link to="/Login">Login</Link>
+        </p>
       </div>
     </main>
   );

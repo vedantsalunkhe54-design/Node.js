@@ -4,31 +4,39 @@ import { getMe } from "./services/auth.api";
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-
-        const getAndSetUser = async() => {
-            const data = await getMe()
-            setUser(data.user)
-            setLoading(false)
+  useEffect(() => {
+    const getAndSetUser = async () => {
+      try {
+        const data = await getMe();
+        setUser(data.user);
+      } catch (error) {
+        // 401 simply means the user is not logged in
+        if (error.response?.status === 401) {
+          setUser(null);
+        } else {
+          console.error("Error fetching current user:", error);
         }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        getAndSetUser
+    getAndSetUser();
+  }, []);
 
-    })
-
-    return (
-        <AuthContext.Provider
-            value={{
-                user,
-                setUser,
-                loading,
-                setLoading,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        setLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
