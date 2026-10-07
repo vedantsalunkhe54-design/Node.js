@@ -9,4 +9,10 @@ const interviewRouter = express.Router();
 
 interviewRouter.get("/", authMiddleware.authenticateToken, interviewController.generateInterviewReportController)
 
+interviewRouter.get("/report/:interviewId", authMiddleware.authenticateToken, interviewController.getInterviewReportByIdController)
+
+interviewRouter.post("/", authMiddleware.authUser,  interviewController.getAllInterviewReportsController)
+
+
+
 module.exports = interviewRouter ;
