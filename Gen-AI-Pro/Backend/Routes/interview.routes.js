@@ -11,7 +11,7 @@ console.log(
 
 console.log(
     "upload:",
-    typeof upload
+    typeof upload 
 );
 
 console.log(
